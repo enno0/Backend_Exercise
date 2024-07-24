@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend_xeercise.taskmanagementsystem.customannotation.ValidId;
 import com.backend_xeercise.taskmanagementsystem.models.Users;
 import com.backend_xeercise.taskmanagementsystem.service.UsersCRUD;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,25 +33,25 @@ public class UsersRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Users> getUserById(@PathVariable @ValidId Long id) {
         Optional<Users> user = usersCRUD.getById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody Users user) {
-        usersCRUD.saveInfo(user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
+    public ResponseEntity<Void> createUser(@Valid @RequestBody Users user) {
+        usersCRUD.saveInfo(user.getName(), user.getEmail(), user.getPassword(), user.getMobilePhone());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody Users user) {
-        usersCRUD.updateInfo(user.getName(), user.getEmail(), user.getPassword(), user.getRoles(), id);
+    public ResponseEntity<Void> updateUser(@PathVariable @ValidId Long id, @Valid @RequestBody Users user) {
+        usersCRUD.updateInfo(user.getName(), user.getEmail(), user.getPassword(), user.getMobilePhone(), id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable @ValidId Long id) {
         usersCRUD.delete(id);
         return ResponseEntity.noContent().build();
     }

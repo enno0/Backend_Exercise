@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
-    <title>Users List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users</title>
 </head>
 
 <body>
-    <h1>Users List</h1>
-    <table>
+    <h1>All Users</h1>
+    <table border="1">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Roles</th>
+                <th>password</th>
+                <th>mobilePhone</th>
+
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.roles}"></td>
+            <tr th:each="users : ${users}">
+                <td th:text="${users.id}"></td>
+                <td th:text="${users.name}"></td>
+                <td th:text="${users.email}"></td>
+                <td th:text="${users.password}"></td>
+                <td th:text="${users.mobilePhone}"></td>
                 <td>
-                    <a th:href="@{/web/users/{id}(id=${user.id})}">View</a>
-                    <form th:action="@{/web/users/{id}(id=${user.id})}" method="post">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit">Delete</button>
-                    </form>
+                    <a th:href="@{'/web/users/update/' + ${users.id}}">Update</a>
+                    <a th:href="@{'/web/users/delete/' + ${users.id}}">Delete</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    <a href="/web/users/new">Add New User</a>
+    <a href="/web/users/add">Add New User</a>
 </body>
 
 </html>

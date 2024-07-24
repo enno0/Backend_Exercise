@@ -18,22 +18,22 @@ public class UsersCRUD {
     private UsersAccOp uAO;
 
     // Create
-    public void saveInfo(String name, String email, String password, String roles) {
-        if (validateInputs(name, password, email, roles)) {
-            Users users = new Users(name, roles, password, email);
+    public void saveInfo(String name, String email, String password, String mobilePhone) {
+        if (validateInputs(name, password, email, mobilePhone)) {
+            Users users = new Users(name, mobilePhone, password, email);
             uAO.save(users);
         }
     }
 
     // update
-    public void updateInfo(String name, String email, String password, String roles, Long id) {
+    public void updateInfo(String name, String email, String password, String mobilePhone, Long id) {
         Optional<Users> existingRecord = uAO.findById(id);
-        if (existingRecord.isPresent() && validateInputs(name, password, email, roles)) {
+        if (existingRecord.isPresent() && validateInputs(name, password, email, mobilePhone)) {
             Users users = existingRecord.get();
             users.setName(name);
             users.setEmail(email);
             users.setPassword(password);
-            users.setRoles(roles);
+            users.setMobilePhone(mobilePhone);
             uAO.save(users);
         } else {
             throw new IllegalArgumentException("Invalid input data or record not found.");
@@ -42,10 +42,10 @@ public class UsersCRUD {
     }
 
     // validation
-    private boolean validateInputs(String name, String password, String email, String role) {
+    private boolean validateInputs(String name, String password, String email, String mobilePhone) {
         // Add proper validation logic
         if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()
-                || role.isEmpty() || role == null) {
+                || mobilePhone.isEmpty() || mobilePhone == null) {
             return false;
         }
         // simple email validation
