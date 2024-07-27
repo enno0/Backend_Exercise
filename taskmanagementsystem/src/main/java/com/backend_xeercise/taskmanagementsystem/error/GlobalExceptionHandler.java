@@ -1,16 +1,16 @@
 package com.backend_xeercise.taskmanagementsystem.error;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.validation.FieldError;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,5 +41,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
     // Handle other exceptions if needed
 }
