@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Users</title>
+    <div th:replace="/csrf2.html"></div>
+
 </head>
 
 <body>
@@ -36,6 +38,7 @@
         </tbody>
     </table>
     <a href="/web/users/add">Add New User</a>
+    <a class="nav-link" th:href="@{/logout}">Logout</a>
 </body>
 
 </html>

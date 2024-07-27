@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Task</title>
+    <div th:replace="/csrf2.html"></div>
+
 </head>
 
 <body>
@@ -27,6 +29,7 @@
         <button type="submit">Add Task</button>
     </form>
     <a href="/web/tasks/allTasks">Back to Tasks List</a>
+
 </body>
 
 </html>

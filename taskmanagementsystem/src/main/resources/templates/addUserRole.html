@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add User Role</title>
+</head>
+
+<body>
+    <h1>Add User Role</h1>
+    <form th:action="@{/web/userRole/add}" th:object="${userRole}" method="post">
+        <label>Name: <input type="text" th:field="*{name}" /></label>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+        <label>Role: <input type="text" th:field="*{role}" /></label>
+        <div th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</div>
+        <button type="submit">Add</button>
+    </form>
+    <a href="/web/userRole">Back to List</a>
+    <div th:replace="/csrf2.html"></div>
+
+</body>
+
+</html>

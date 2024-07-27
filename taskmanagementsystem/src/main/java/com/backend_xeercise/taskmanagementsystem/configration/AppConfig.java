@@ -37,4 +37,5 @@ public class AppConfig {
         dataSource.setPassword(env.getProperty("spring.datasource.password"));
         return dataSource;
     }
+
 }

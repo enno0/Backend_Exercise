@@ -12,19 +12,29 @@
     <form action="/web/users/add" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</div>
+
 
         <label for="password">password:</label>
         <input type="text" id="password" name="password" required><br><br>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
+
 
         <label for="mobilePhone">mobilePhone:</label>
         <input type="text" id="mobilePhone" name="mobilePhone" required><br><br>
+        <div th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}">mobilePhone Error</div>
+
 
         <button type="submit">Add User</button>
     </form>
     <a href="/web/users/allUsers">Back to All Users</a>
+    <div th:replace="/csrf2.html"></div>
+
 </body>
 
 </html>
