@@ -12,7 +12,7 @@
         <h1>Welcome to our website, <span sec:authentication="name"></span>!</h1>
         <p>
             Your roles are: <span sec:authentication="principal.authorities"></span>
-        <h5><a th:href="@{/login}">LOGOUT</a></h5>
+        <h5><a th:href="@{/logout}">LOGOUT</a></h5>
         <h5><a th:href="@{/web/tasks/allTasks}">TASKS</a></h5>
         <div sec:authorize="hasRole('ROLE_ADMIN')">
             <h5><a th:href="@{/web/users/allUsers}">USERS</a></h5>

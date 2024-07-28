@@ -6,25 +6,32 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
         @SuppressWarnings("deprecation")
-
         @Bean
         SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .csrf(csrf -> csrf
                                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                                                .ignoringRequestMatchers("/api/**")) // Disable CSRF for /api/login
+                                                .ignoringRequestMatchers("/apii/**")) // Disable CSRF for /api/login
                                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                                                .requestMatchers("/login", "/api/**").permitAll()
+                                                .requestMatchers("/login", "/apii/**").permitAll()
                                                 .requestMatchers("/web/tasks").hasRole("USER")
-                                                .requestMatchers("/wep/**").hasRole("ADMIN")
+                                                .requestMatchers("/web/**", "/web/users", "/web/userRole", "/api/**")
+                                                .hasRole("ADMIN")
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 .loginPage("/login")
@@ -33,12 +40,17 @@ public class SecurityConfig {
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/login?logout")
                                                 .invalidateHttpSession(true)
-                                                .deleteCookies("JSESSIONID"))
+                                                .deleteCookies("JSESSIONID")
+                                                .addLogoutHandler(logoutHandler()))
                                 .exceptionHandling(exceptionHandling -> exceptionHandling
                                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                                                         accessDeniedException.printStackTrace();
                                                         response.sendRedirect("/access-denied");
-                                                }));
+                                                }))
+                                .sessionManagement(sessionManagement -> sessionManagement
+                                                .maximumSessions(1)
+                                                .sessionRegistry(sessionRegistry())
+                                                .expiredUrl("/login?expired"));
 
                 return http.build();
         }
@@ -49,4 +61,27 @@ public class SecurityConfig {
                 return authenticationConfiguration.getAuthenticationManager();
         }
 
+        @Bean
+        public SessionRegistry sessionRegistry() {
+                return new SessionRegistryImpl();
+        }
+
+        @Bean
+        public HttpSessionEventPublisher httpSessionEventPublisher() {
+                return new HttpSessionEventPublisher();
+        }
+
+        @Bean
+        public LogoutHandler logoutHandler() {
+                return new LogoutHandler() {
+                        @Override
+                        public void logout(HttpServletRequest request, HttpServletResponse response,
+                                        org.springframework.security.core.Authentication authentication) {
+                                if (authentication != null && authentication.getPrincipal() != null) {
+                                        sessionRegistry().getAllSessions(authentication.getPrincipal(), false)
+                                                        .forEach(sessionInformation -> sessionInformation.expireNow());
+                                }
+                        }
+                };
+        }
 }
