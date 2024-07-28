@@ -21,6 +21,21 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
 
+    - name: Start MySQL service
+      uses: mirromutth/mysql-action@v1
+      with:
+        mysql version: '8.0'
+        mysql root password: 'root'
+        mysql database: 'kamal'
+        mysql username: 'kamal'
+        mysql password: 'work123'
+        port: 3307
+
+    - name: Setup database schema
+      run: |
+        sudo apt-get install mysql-client
+        mysql -u kamal -pwork123 -h 127.0.0.1 -P 3307 -e 'CREATE DATABASE IF NOT EXISTS kamal;'
+
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
