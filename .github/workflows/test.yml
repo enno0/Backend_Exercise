@@ -21,20 +21,20 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
 
-    - name: Start MySQL service
-      uses: mirromutth/mysql-action@v1
-      with:
-        mysql version: '8.0'
-        mysql root password: 'root'
-        mysql database: 'kamal'
-        mysql username: 'kamal'
-        mysql password: 'work123'
-        port: 3307
-
-    - name: Setup database schema
+    - name: Install MySQL
       run: |
-        sudo apt-get install mysql-client
-        mysql -u kamal -pwork123 -h 127.0.0.1 -P 3307 -e 'CREATE DATABASE IF NOT EXISTS kamal;'
+        sudo apt-get update
+        sudo apt-get install -y mysql-server
+        sudo systemctl start mysql
+        sudo mysql -e "CREATE DATABASE kamal;"
+        sudo mysql -e "CREATE USER 'kamal'@'localhost' IDENTIFIED BY 'work123';"
+        sudo mysql -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'localhost';"
+        sudo mysql -e "FLUSH PRIVILEGES;"
+
+    - name: Configure MySQL to listen on the correct port
+      run: |
+        sudo sed -i 's/3306/3307/' /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo systemctl restart mysql
 
     - name: Cache Maven packages
       uses: actions/cache@v2
