@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Access Denied</title>
-    <div th:replace="~{/csrf-fragment.html}"></div>
 </head>
 
 <body>
@@ -16,7 +15,7 @@
         <p>Access denied! Please log in to access this resource.</p>
     </div>
 
-    <!-- <h5><a th:href="@{/M/logout}">LOGOUT</a></h5> -->
+    <h5><a th:href="@{/login}">LOGOUT</a></h5>
     <!-- <h5><a th:href="@{/showStudent}">BACK</a></h5> -->
 </body>
 

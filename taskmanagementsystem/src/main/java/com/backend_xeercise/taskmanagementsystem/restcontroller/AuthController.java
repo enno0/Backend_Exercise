@@ -1,5 +1,11 @@
 package com.backend_xeercise.taskmanagementsystem.restcontroller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,21 +17,18 @@ import com.backend_xeercise.taskmanagementsystem.datatransferopject.LoginRequest
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @PostMapping("/login")
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping
     public String login(@RequestBody LoginRequest loginRequest) {
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
-
-        // Logic to authenticate the user
-        if (authenticate(username, password)) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             return "Login successful";
-        } else {
-            return "Login failed";
+        } catch (AuthenticationException e) {
+            return "Login failed: " + e.getMessage();
         }
-    }
-
-    private boolean authenticate(String username, String password) {
-        // Replace this with your authentication logic
-        return "username".equals(username) && "password".equals(password);
     }
 }

@@ -32,13 +32,14 @@
                 <td th:text="${users.mobilePhone}"></td>
                 <td>
                     <a th:href="@{'/web/users/update/' + ${users.id}}">Update</a>
-                    <a th:href="@{'/web/users/delete/' + ${users.id}}">Delete</a>
+                    <a th:href="@{'/web/users/delete/' + ${users.id}}"
+                        onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
                 </td>
             </tr>
         </tbody>
     </table>
     <a href="/web/users/add">Add New User</a>
-    <a class="nav-link" th:href="@{/logout}">Logout</a>
+    <a class="nav-link" th:href="@{/login}">Logout</a>
 </body>
 
 </html>

@@ -4,36 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New User</title>
+    <title>Update User</title>
+    <div th:replace="/csrf2.html"></div>
+
 </head>
 
 <body>
-    <h1>Add New User</h1>
-    <form action="/web/users/add" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <h1>Update User</h1>
+    <form th:action="@{/web/users/add}" th:object="${users}" method="post">
+        <label for="name">name:</label>
+        <input type="text" id="name" th:field="*{name}" required><br><br>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</div>
 
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <label for="email">email:</label>
+        <input type="email" id="email" th:field="*{email}" required><br><br>
         <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</div>
 
 
         <label for="password">password:</label>
-        <input type="text" id="password" name="password" required><br><br>
+        <input type="text" id="password" th:field="*{password}" required><br><br>
         <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
 
 
         <label for="mobilePhone">mobilePhone:</label>
-        <input type="text" id="mobilePhone" name="mobilePhone" required><br><br>
+        <input type="text" id="mobilePhone" th:field="*{mobilePhone}" required><br><br>
         <div th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}">mobilePhone Error</div>
 
 
-        <button type="submit">Add User</button>
+        <button type="submit">add User</button>
     </form>
     <a href="/web/users/allUsers">Back to All Users</a>
-    <div th:replace="/csrf2.html"></div>
 
 </body>
 
