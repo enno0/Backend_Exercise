@@ -114,14 +114,14 @@ spring.mvc.view.suffix=.html
 logging.level.org.springframework=DEBUG
 
 # Configure Mail Properties
-# spring.mail.host=smtp.gmail.com
-# spring.mail.port=587
-# spring.mail.username=your-email@gmail.com
-# spring.mail.password=your-email-password
-# spring.mail.properties.mail.smtp.auth=true
-# spring.mail.properties.mail.smtp.starttls.enable=true
-# spring.mail.properties.mail.smtp.starttls.required=true
-# spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
+- spring.mail.host=smtp.gmail.com
+- spring.mail.port=587
+- spring.mail.username=your-email@gmail.com
+- spring.mail.password=your-email-password
+- spring.mail.properties.mail.smtp.auth=true
+- spring.mail.properties.mail.smtp.starttls.enable=true
+- spring.mail.properties.mail.smtp.starttls.required=true
+- spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
 
 ## Usage
 
