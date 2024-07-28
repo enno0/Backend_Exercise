@@ -29,11 +29,6 @@ jobs:
         echo "mysql-server mysql-server/root_password_again password root" | sudo debconf-set-selections
         sudo apt-get install -y mysql-server
         sudo systemctl start mysql
-        sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
-
-    - name: Check MySQL status
-      run: |
-        sudo systemctl status mysql
 
     - name: Secure MySQL Installation and Create Database and Users
       run: |
@@ -51,16 +46,12 @@ jobs:
 
     - name: Wait for MySQL to be ready
       run: |
-        for i in `seq 1 60`; do
-          nc -zv localhost 3307 && echo Success && exit 0
+        for i in `seq 1 90`; do
+          nc -z localhost 3307 && echo Success && exit 0
           echo "Waiting for MySQL..."
-          sleep 2
+          sleep 1
         done
         echo "MySQL did not start in time" && exit 1
-
-    - name: Check MySQL logs
-      run: |
-        sudo journalctl -xe
 
     - name: Cache Maven packages
       uses: actions/cache@v2
