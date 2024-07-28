@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Home Page</title>
+    <div th:replace="~{/csrf2.html}"></div>
+</head>
+
+<body>
+    <div class="container"></div>
+    <div sec:authorize="isAuthenticated()">
+        <h1>Welcome to our website, <span sec:authentication="name"></span>!</h1>
+        <p>
+            Your roles are: <span sec:authentication="principal.authorities"></span>
+        <h5><a th:href="@{/login}">LOGOUT</a></h5>
+        <h5><a th:href="@{/web/tasks/allTasks}">TASKS</a></h5>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <h5><a th:href="@{/web/users/allUsers}">USERS</a></h5>
+            <h5><a th:href="@{/web/userRole}">UESRS&ROLES</a></h5>
+        </div>
+
+        </p>
+        <!-- Other authenticated user content -->
+    </div>
+</body>
+
+</html>
