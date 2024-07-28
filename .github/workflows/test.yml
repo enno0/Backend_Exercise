@@ -27,6 +27,13 @@ jobs:
         sudo apt-get install -y mysql-server
         sudo systemctl start mysql
         sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+
+    - name: Secure MySQL Installation
+      run: |
+        sudo mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+
+    - name: Create Database and Users
+      run: |
         sudo mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS kamal;"
         sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'%' IDENTIFIED BY 'work123';"
         sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'localhost' IDENTIFIED BY 'work123';"
