@@ -14,7 +14,7 @@ This project is a Task Management System built using Spring Boot. The applicatio
 
 ## Project Structure
 
-- `src/main/java/com/backend_xeercise/taskmanagementsystem`
+- `src/main/java/com/banquemisr/challenge05/taskmanagementsystem`
   - `controllers`
     - `TaskController.java`
     - `UserController.java`
@@ -117,7 +117,7 @@ spring.mvc.view.suffix=.html
 # DEBUG
 logging.level.org.springframework=DEBUG
 
-# Configure Mail Properties
+# Configure Mail Properties (currently inactive)
 - spring.mail.host=smtp.gmail.com
 - spring.mail.port=587
 - spring.mail.username=your-email@gmail.com
