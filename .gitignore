@@ -65,7 +65,7 @@ nbdist/
 .idea/**/file.template.settings.xml
 .idea/**/other.xml
 
-# Target
+# Target directory
 target/
 
 # Maven
