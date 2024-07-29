@@ -14,7 +14,7 @@ import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.backend_xeercise" })
+@ComponentScan(basePackages = { "banquemisr.challenege05.taskmangmentsystem" })
 @PropertySource("classpath:application.properties")
 public class AppConfig {
     @Autowired
