@@ -72,4 +72,6 @@ jobs:
         with:
           name: surefire-reports
           path: target/surefire-reports
-          
+
+      - name: Print Surefire report summary
+        run: cat target/surefire-reports/*.txt
