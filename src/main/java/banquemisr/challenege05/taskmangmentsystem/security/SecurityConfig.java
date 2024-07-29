@@ -26,11 +26,11 @@ public class SecurityConfig {
                 http
                                 .csrf(csrf -> csrf
                                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                                                .ignoringRequestMatchers("/apii/**")) // Disable CSRF for /api/login
+                                                .ignoringRequestMatchers("/api/**")) // Disable CSRF for /api endpoints
                                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                                                .requestMatchers("/login", "/apii/**").permitAll()
-                                                .requestMatchers("/web/tasks").hasRole("USER")
-                                                .requestMatchers("/web/**", "/web/users", "/web/userRole", "/api/**")
+                                                .requestMatchers("/login", "/api/**").permitAll()
+                                                .requestMatchers("/web/tasks/**").hasRole("USER")
+                                                .requestMatchers("/web/**", "/web/users", "/web/userRole")
                                                 .hasRole("ADMIN")
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form

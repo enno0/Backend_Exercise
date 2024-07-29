@@ -11,14 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class AuthControllerWeb {
+
     @GetMapping("/")
-    public String Home(Model model) {
+    public String home(Model model) {
         return "Home";
     }
 
     @GetMapping("/login")
-    public String Home2(Model model) {
-        model.addAttribute("message", "Welcome :]");
+    public String login(Model model) {
+        model.addAttribute("message", "Welcome :)");
         return "login";
     }
 
@@ -31,6 +32,8 @@ public class AuthControllerWeb {
     public String logoutPage(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
+            request.getSession().invalidate(); // Invalidate the session
+            response.setStatus(HttpServletResponse.SC_OK); // Commit the response
         }
         return "redirect:/login?logout";
     }

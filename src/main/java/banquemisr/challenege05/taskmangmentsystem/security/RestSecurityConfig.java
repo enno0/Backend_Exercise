@@ -14,6 +14,7 @@ public class RestSecurityConfig {
     @Bean
     SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/**") // Apply this security config only to paths starting with /api/
                 .csrf().disable() // Disable CSRF for REST API
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/auth/**").permitAll() // Allow access to /api/auth endpoint
