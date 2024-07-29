@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>User Roles List</title>
+</head>
+
+<body>
+    <h1>User Roles List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="userRole : ${userRoles}">
+                <td th:text="${userRole.id}"></td>
+                <td th:text="${userRole.name}"></td>
+                <td th:text="${userRole.role}"></td>
+                <td>
+                    <a th:href="@{/web/userRole/update/{id}(id=${userRole.id})}">Edit</a>
+                    <a th:href="@{/web/userRole/delete/{id}(id=${userRole.id})}"
+                        onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/web/userRole/add">Add New User Role</a>
+    <h5><a th:href="@{/logout}">LOGOUT</a></h5>
+
+</body>
+
+</html>
