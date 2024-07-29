@@ -12,57 +12,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
 
-    - name: Install MySQL
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y debconf-utils
-        echo "mysql-server mysql-server/root_password password root" | sudo debconf-set-selections
-        echo "mysql-server mysql-server/root_password_again password root" | sudo debconf-set-selections
-        sudo apt-get install -y mysql-server
-        sudo systemctl start mysql
+      - name: Install MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debconf-utils
+          echo "mysql-server mysql-server/root_password password root" | sudo debconf-set-selections
+          echo "mysql-server mysql-server/root_password_again password root" | sudo debconf-set-selections
+          sudo apt-get install -y mysql-server
+          sudo systemctl start mysql
 
-    - name: Secure MySQL Installation and Create Database and Users
-      run: |
-        sudo mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS kamal;"
-        sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'%' IDENTIFIED BY 'work123';"
-        sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'localhost' IDENTIFIED BY 'work123';"
-        sudo mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'%';"
-        sudo mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'localhost';"
-        sudo mysql -uroot -proot -e "FLUSH PRIVILEGES;"
+      - name: Secure MySQL Installation and Create Database and Users
+        run: |
+          sudo mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS kamal;"
+          sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'%' IDENTIFIED BY 'work123';"
+          sudo mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'kamal'@'localhost' IDENTIFIED BY 'work123';"
+          sudo mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'%';"
+          sudo mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'localhost';"
+          sudo mysql -uroot -proot -e "FLUSH PRIVILEGES;"
 
-    - name: Configure MySQL to listen on the correct port
-      run: |
-        sudo sed -i 's/port\s*=\s*3306/port = 3307/' /etc/mysql/mysql.conf.d/mysqld.cnf
-        sudo systemctl restart mysql
+      - name: Configure MySQL to listen on the default port
+        run: |
+          sudo sed -i 's/^bind-address\s*=.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+          sudo systemctl restart mysql
 
-    - name: Wait for MySQL to be ready
-      run: |
-        for i in `seq 1 90`; do
-          nc -z localhost 3307 && echo Success && exit 0
-          echo "Waiting for MySQL..."
-          sleep 1
-        done
-        echo "MySQL did not start in time" && exit 1
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in `seq 1 90`; do
+            nc -z localhost 3306 && echo Success && exit 0
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+          echo "MySQL did not start in time" && exit 1
 
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - name: Build with Maven
-      run: mvn clean install
+      - name: Build with Maven
+        run: mvn clean install
 
-    - name: Run tests
-      run: mvn test
+      - name: Run tests
+        run: mvn test
