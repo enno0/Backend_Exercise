@@ -20,6 +20,7 @@ public class TaskmanagementsystemApplicationTests {
 		System.out.println("Active profiles: " + Arrays.toString(environment.getActiveProfiles()));
 		System.out.println("Spring DataSource URL: " + environment.getProperty("spring.datasource.url"));
 		System.out.println("Spring DataSource Username: " + environment.getProperty("spring.datasource.username"));
-		// Add additional logging as needed
+		System.out.println("Spring DataSource Password: " + environment.getProperty("spring.datasource.password"));
+		// Additional logging as needed
 	}
 }
