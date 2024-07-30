@@ -39,15 +39,16 @@ jobs:
           sudo mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON kamal.* TO 'kamal'@'localhost';"
           sudo mysql -uroot -proot -e "FLUSH PRIVILEGES;"
 
-      - name: Configure MySQL to listen on the default port
+      - name: Configure MySQL to listen on port 3307
         run: |
+          sudo sed -i 's/^port\s*=.*/port = 3307/' /etc/mysql/mysql.conf.d/mysqld.cnf
           sudo sed -i 's/^bind-address\s*=.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
           sudo systemctl restart mysql
 
       - name: Wait for MySQL to be ready
         run: |
           for i in `seq 1 90`; do
-            nc -z localhost 3306 && echo Success && exit 0
+            nc -z localhost 3307 && echo Success && exit 0
             echo "Waiting for MySQL..."
             sleep 1
           done
