@@ -64,8 +64,8 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -X
 
-      - name: Run tests
-        run: mvn test
+      - name: Run tests with debug info
+        run: mvn test -X
 
       - name: Upload Surefire reports
         uses: actions/upload-artifact@v2
@@ -75,3 +75,6 @@ jobs:
 
       - name: Print Surefire report summary
         run: cat target/surefire-reports/*.txt
+
+      - name: Print Environment Variables
+        run: printenv
